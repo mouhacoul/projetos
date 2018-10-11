@@ -37,7 +37,7 @@
                 [
                     'label' => 'Fornecedores',
                     'icon' => 'fa fa-truck',
-                    'url' => '#',
+                    'url' => ['fornecedor/index'],
                     'visible' => (Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('secretaria')),
                 ],
                 [
