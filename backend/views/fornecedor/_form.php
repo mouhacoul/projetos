@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'cpf_cnpj')->textInput(['maxlength' => 14]) ?>
         <div class="form-group">
+            <?= Html::a('Voltar a lista', ['fornecedor/index'] ,['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton('Salvar', ['class' => 'btn btn-success']) ?>
         </div>
     </div>

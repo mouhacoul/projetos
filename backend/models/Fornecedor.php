@@ -27,10 +27,10 @@ class Fornecedor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome'], 'string', 'max' => 120],
+            [['nome'], 'string', 'max' => 200],
             [['cpf_cnpj'], 'number'],
             [['nome', 'cpf_cnpj'], 'required'],
-            [['nome', 'cpf_cnpj'], 'unique', 'targetAttribute' => ['nome', 'cpf_cnpj'], 'message' => 'Fornecedor já cadastrado']
+            [['cpf_cnpj'], 'unique', 'message' => 'Fornecedor já cadastrado']
         ];
     }
 
