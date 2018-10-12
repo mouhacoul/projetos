@@ -43,7 +43,7 @@
                 [
                     'label' => 'Despesas',
                     'icon' => 'fa fa-list-alt',
-                    'url' => '#',
+                    'url' => ['despesa/index'],
                     'visible' => (Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('secretaria')),
                 ],
             ]
