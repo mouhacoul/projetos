@@ -29,7 +29,6 @@ class Fornecedor extends \yii\db\ActiveRecord
         return [
             [['nome'], 'string', 'max' => 200],
             [['cpf_cnpj'], 'number'],
-            [['nome', 'cpf_cnpj'], 'required'],
             [['cpf_cnpj'], 'unique', 'message' => 'Fornecedor já cadastrado']
         ];
     }
