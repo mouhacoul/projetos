@@ -71,10 +71,10 @@ class DespesaController extends Controller
         $fornecedorModel = new Fornecedor();
         $beneficiarioModel = new Beneficiario();
 
-        $fornecedores = $fornecedorModel->find()->orderBy('id ASC')->all();
+        $fornecedores = $fornecedorModel->find()->orderBy('nome ASC')->all();
         $listaFornecedores = [];
         foreach($fornecedores as $f){
-            $listaFornecedores[$f->id] = $f->nome;
+            $listaFornecedores[] = $f->nome;
         }
         if ($despesaModel->load(Yii::$app->request->post()) && $despesaModel->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -86,6 +86,16 @@ class DespesaController extends Controller
             'beneficiarioModel' => $beneficiarioModel,
             'fornecedores' => $listaFornecedores
         ]);
+    }
+
+    public function actionGetfornecedorinfo($nome){
+        $fornecedor = Fornecedor::find()->where(['nome' => $nome])->one();
+
+        if(isset($fornecedor)){
+            return $fornecedor->cpf_cnpj;
+        }else{
+            return "";
+        }
     }
 
     /**
