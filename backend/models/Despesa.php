@@ -47,7 +47,8 @@ class Despesa extends \yii\db\ActiveRecord
     {
         return [
             [['valor_unitario'], 'number'],
-            [['qtde', 'tipo_desp', 'id_beneficiario', 'id_fornecedor'/*, 'id_item'*/], 'integer'],
+            [['tipo_desp', 'id_beneficiario', 'id_fornecedor'/*, 'id_item'*/], 'integer'],
+            [['qtde'], 'integer', 'min' => 1],
             [['data_emissao_NF', 'data_pgto'], 'safe'],
             [['pendencias', 'objetivo'], 'string'],
             [['status'], 'string', 'max' => 20],
