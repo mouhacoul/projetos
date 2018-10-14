@@ -32,8 +32,9 @@ class Beneficiario extends \yii\db\ActiveRecord
     {
         return [
             [['nome'], 'string', 'max' => 200],
-            [['rg', 'orgao_emissor'], 'string', 'max' => 20],
+            [['orgao_emissor'], 'string', 'max' => 20],
             [['nivel_academico'], 'string', 'max' => 100],
+            [['rg'], 'number'],
             [['rg'], 'unique'],
         ];
     }
@@ -46,9 +47,9 @@ class Beneficiario extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nome' => 'Nome',
-            'rg' => 'Rg',
-            'orgao_emissor' => 'Orgao Emissor',
-            'nivel_academico' => 'Nivel Academico',
+            'rg' => 'RG',
+            'orgao_emissor' => 'Órgão Emissor',
+            'nivel_academico' => 'Nível Acadêmico',
         ];
     }
 
