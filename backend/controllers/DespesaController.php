@@ -5,6 +5,9 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Despesa;
 use backend\models\DespesaSearch;
+use backend\models\Fornecedor;
+use backend\models\FornecedorSearch;
+use backend\models\Beneficiario;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,14 +67,24 @@ class DespesaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Despesa();
+        $despesaModel = new Despesa();
+        $fornecedorModel = new Fornecedor();
+        $beneficiarioModel = new Beneficiario();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $fornecedores = $fornecedorModel->find()->orderBy('id ASC')->all();
+        $listaFornecedores = [];
+        foreach($fornecedores as $f){
+            $listaFornecedores[$f->id] = $f->nome;
+        }
+        if ($despesaModel->load(Yii::$app->request->post()) && $despesaModel->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'despesaModel' => $despesaModel,
+            'fornecedorModel' => $fornecedorModel,
+            'beneficiarioModel' => $beneficiarioModel,
+            'fornecedores' => $listaFornecedores
         ]);
     }
 
