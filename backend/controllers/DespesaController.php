@@ -8,6 +8,7 @@ use backend\models\DespesaSearch;
 use backend\models\Fornecedor;
 use backend\models\FornecedorSearch;
 use backend\models\Beneficiario;
+use backend\models\Item;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,6 +71,7 @@ class DespesaController extends Controller
         $despesaModel = new Despesa();
         $fornecedorModel = new Fornecedor();
         $beneficiarioModel = new Beneficiario();
+        $itemModel = new Item();
 
         $fornecedores = $fornecedorModel->find()->orderBy('nome ASC')->all();
         $listaFornecedores = [];
@@ -84,6 +86,7 @@ class DespesaController extends Controller
             'despesaModel' => $despesaModel,
             'fornecedorModel' => $fornecedorModel,
             'beneficiarioModel' => $beneficiarioModel,
+            'itemModel' => $itemModel,
             'fornecedores' => $listaFornecedores
         ]);
     }
@@ -96,6 +99,16 @@ class DespesaController extends Controller
         }else{
             return "";
         }
+    }
+
+    public function actionGetitemdesc($numero, $projeto, $tipo){
+        $item = Item::find()->where([
+            'numero_item' => $numero,
+            'id_projeto' => $projeto,
+            'tipo_item' => $tipo
+            ])->one();
+
+        return isset($item) && $item->descricao ? $item->descricao : "";
     }
 
     /**

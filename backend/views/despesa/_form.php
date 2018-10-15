@@ -42,16 +42,17 @@ $this->registerJs($script, View::POS_READY);
             <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => 2]) ?>
         </div>
         <div class="col-md-1">
-            <?= $form->field($despesaModel, 'id_item')->textInput()->label('Item') ?>
+            <?= $form->field($itemModel, 'numero_item')->textInput([
+                'onkeyup' => '$.get( "'.Url::toRoute(['/despesa/getitemdesc']).'", { numero : $(this).val(), projeto: 1, tipo: 2 })
+                .done(function(data) {
+                $("#item-descricao").val(data);
+                });'
+            ])->label('Item') ?>
         </div>
         <div class="col-md-3">
-            <label for="desc_item">Descrição item</label>
-            <?= Html::textInput('desc_item', 'Exemplo desc item', [
-                'class' => 'form-control', 
-                'id' => 'desc_item',
-                'readonly' => true,
-                'autocomplete' => 'off'
-            ]);?>
+            <?= $form->field($itemModel, 'descricao')->textInput([
+                'readonly' => true
+            ])->label('Descricão item') ?>
         </div>
         <div class="col-md-2">
             <!-- <?= $form->field($fornecedorModel, 'nome')->textInput()->label('Fornecedor') ?> -->

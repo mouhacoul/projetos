@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'despesaModel' => $despesaModel,
         'fornecedorModel' => $fornecedorModel,
         'beneficiarioModel' => $beneficiarioModel,
+        'itemModel' => $itemModel,
         'fornecedores' => $fornecedores
     ]) ?>
 
