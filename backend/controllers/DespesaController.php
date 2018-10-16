@@ -79,35 +79,29 @@ class DespesaController extends Controller
             $listaFornecedores[] = $f->nome;
         }
         if ($despesaModel->load(Yii::$app->request->post())) {
-            //load data into models from request
+
             $beneficiarioModel->load(Yii::$app->request->post());
             $fornecedorModel->load(Yii::$app->request->post());
             $itemModel->load(Yii::$app->request->post());
 
-            $beneficiarioModel->save();
-
-            //checa se fornecedor ja existe
-            $fornecedor = Fornecedor::find()->where([
-                'nome' => $fornecedorModel->nome,
-                'cpf_cnpj' => $fornecedorModel->cpf_cnpj
-            ])->one();
-            //se ja existe, apenas atribui o id para a despesa
-            if(isset($fornecedor) && $fornecedor->id){
-                $despesaModel->id_fornecedor = $fornecedor->id;
-            }else{
-                //se nao existe, um novo é criado
-                $fornecedorModel->save();
-                $despesaModel->id_fornecedor = $fornecedorModel->id;
+            if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
+                $beneficiarioModel->save();
+                $despesaModel->id_beneficiario = $beneficiarioModel->id;
             }
 
-            $item = Item::find()->where(['numero_item' => $itemModel->numero_item])->one();
-            if(isset($item) && $item->id){
-                $despesaModel->id_item = $item->id;
+            if(!empty($fornecedorModel->nome) || !empty($fornecedorModel->cpf_cnpj)){
+                $fornecedor = Fornecedor::find()->where(['cpf_cnpj' => $fornecedorModel->cpf_cnpj])->one();
+                if(!isset($fornecedor)){
+                    $fornecedorModel->save();
+                    $despesaModel->id_fornecedor = $fornecedorModel->id;    
+                }else{
+                    $despesaModel->id_fornecedor = $fornecedor->id;
+                }
             }
-            $despesaModel->id_beneficiario = $beneficiarioModel->id;
 
             $despesaModel->save();
             return $this->redirect(['index']);
+            
         }
 
         return $this->render('create', [
@@ -122,21 +116,17 @@ class DespesaController extends Controller
     public function actionGetfornecedorinfo($nome){
         $fornecedor = Fornecedor::find()->where(['nome' => $nome])->one();
 
-        if(isset($fornecedor)){
-            return $fornecedor->cpf_cnpj;
-        }else{
-            return "";
-        }
+        return $this->asJson(isset($fornecedor) ? $fornecedor : ["id" => null]);
     }
 
-    public function actionGetitemdesc($numero, $projeto, $tipo){
+    public function actionGetiteminfo($numero, $projeto = 1, $tipo){
         $item = Item::find()->where([
             'numero_item' => $numero,
             'id_projeto' => $projeto,
             'tipo_item' => $tipo
             ])->one();
 
-        return isset($item) && $item->descricao ? $item->descricao : "";
+        return $this->asJson(isset($item) ? $item : ["id" => null]);
     }
 
     /**

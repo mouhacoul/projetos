@@ -107,3 +107,9 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.item-alert {
+    font-size: 1.1rem;
+    color: red;
+    display: none;
+}

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\web\View;
-use kartik\widgets\DateTimePicker;
+use kartik\date\DatePicker;
 use yii\jui\AutoComplete;
 
 /* @var $this yii\web\View */
@@ -36,6 +36,7 @@ $this->registerJs($script, View::POS_READY);
 <div class="despesa-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    <?= $form->errorSummary($despesaModel); ?>
 
     <div class="row">
         <div class="col-md-2">
@@ -43,11 +44,25 @@ $this->registerJs($script, View::POS_READY);
         </div>
         <div class="col-md-1">
             <?= $form->field($itemModel, 'numero_item')->textInput([
-                'onkeyup' => '$.get( "'.Url::toRoute(['/despesa/getitemdesc']).'", { numero : $(this).val(), projeto: 1, tipo: 2 })
-                .done(function(data) {
-                $("#item-descricao").val(data);
-                });'
+                'onkeyup' => '
+                    if(!$(this).val()){
+                        $("#item_alert").hide();
+                    }else{
+                        $.get( "'.Url::toRoute(['/despesa/getiteminfo']).'", { numero : $(this).val(), tipo: $("#despesa-tipo_desp").val() })
+                        .done(function(item) {
+                            if(item.id !== null){
+                                $("#item-descricao").val(item.descricao ? item.descricao : "N/A");
+                                $("#despesa-id_item").val(item.id);
+                                $("#item_alert").hide();
+                            }else{
+                                $("#item_alert").show();
+                                $("#item-descricao").val("");
+                                $("#despesa-id_item").val(null);
+                            }
+                        });
+                    }'
             ])->label('Item') ?>
+            <span class="item-alert" id="item_alert">Este item não existe.</span>
         </div>
         <div class="col-md-3">
             <?= $form->field($itemModel, 'descricao')->textInput([
@@ -55,7 +70,6 @@ $this->registerJs($script, View::POS_READY);
             ])->label('Descricão item') ?>
         </div>
         <div class="col-md-2">
-            <!-- <?= $form->field($fornecedorModel, 'nome')->textInput()->label('Fornecedor') ?> -->
             <label for="nome_fornecedor">Fornecedor</label>
             <?= AutoComplete::widget([
                 'model' => $fornecedorModel,
@@ -67,9 +81,13 @@ $this->registerJs($script, View::POS_READY);
                     'class' => 'form-control',
                     'id' => 'nome_fornecedor',
                     'onchange' => '$.get( "'.Url::toRoute(['/despesa/getfornecedorinfo']).'", { nome : $(this).val() })
-                                                .done(function(data) {
-                                                $("#fornecedor-cpf_cnpj").val(data);
-                                    });'
+                                    .done(function(fornecedor) {
+                                        if(fornecedor.id !== null){
+                                            $("#fornecedor-cpf_cnpj").val(fornecedor.cpf_cnpj);
+                                        }else{
+                                            $("#despesa-id_fornecedor").val(null);
+                                        }
+                                });'
                 ]
             ]); ?>
 
@@ -84,31 +102,25 @@ $this->registerJs($script, View::POS_READY);
 
     <div class="row">
         <div class="col-md-2">
-            <?php echo '<label for="despesa-data_pgto">Data Pagamento</label>';
-            echo DateTimePicker::widget([
-                'model' => $despesaModel,
-                'attribute' => 'data_pgto',
-                'options' => ['placeholder' => 'Data de pagamento'],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd/mm/yyyy hh:ii'
-                ]
-            ]); ?>
+        <?= $form->field($despesaModel, 'data_pgto')->widget(DatePicker::classname(), [
+            'options' => ['placeholder' => 'yyyy-mm-dd'],
+            'pluginOptions' => [
+                'autoclose'=>true,
+                'format' => 'yyyy-mm-dd'
+            ]
+        ]);?>
         </div>
         <div class="col-md-2">
             <?= $form->field($despesaModel, 'nf_recibo')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-2">
-            <?php echo '<label for="despesa-data_emissao_NF">Data emissão NF</label>';
-            echo DateTimePicker::widget([
-                'model' => $despesaModel,
-                'attribute' => 'data_emissao_NF',
-                'options' => ['placeholder' => 'Data de emissão de NF'],
+            <?= $form->field($despesaModel, 'data_emissao_NF')->widget(DatePicker::classname(), [
+                'options' => ['placeholder' => 'yyyy-mm-dd'],
                 'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd/mm/yyyy'
+                    'autoclose'=>true,
+                    'format' => 'yyyy-mm-dd'
                 ]
-            ]); ?>
+            ]);?>
         </div>
         <div class="col-md-1">
             <?= $form->field($despesaModel, 'valor_unitario')->textInput() ?>
@@ -161,7 +173,7 @@ $this->registerJs($script, View::POS_READY);
         <?= Html::a('Voltar a lista', ['despesa/index'] ,['class' => 'btn btn-primary']) ?>
         <?= Html::submitButton('Salvar', ['class' => 'btn btn-success']) ?>
     </div>
-
+    <?= $form->field($despesaModel, 'id_item')->hiddenInput()->label(false) ?>
     <?php ActiveForm::end(); ?>
 
 </div>

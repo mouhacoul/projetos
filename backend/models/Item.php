@@ -103,13 +103,13 @@ class Item extends \yii\db\ActiveRecord
     //     return $this->hasMany(ItemDespesa::className(), ['id_item' => 'id']);
     // }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDespesas0()
-    {
-        return $this->hasMany(Despesa::className(), ['id' => 'id_despesa'])->viaTable('item_despesa', ['id_item' => 'id']);
-    }
+    // /**
+    //  * @return \yii\db\ActiveQuery
+    //  */
+    // public function getDespesas0()
+    // {
+    //     return $this->hasMany(Despesa::className(), ['id' => 'id_despesa'])->viaTable('item_despesa', ['id_item' => 'id']);
+    // }
 
     // /**
     //  * @return \yii\db\ActiveQuery

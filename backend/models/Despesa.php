@@ -47,15 +47,15 @@ class Despesa extends \yii\db\ActiveRecord
     {
         return [
             [['valor_unitario'], 'number'],
-            [['tipo_desp', 'id_beneficiario', 'id_fornecedor'/*, 'id_item'*/], 'integer'],
+            [['tipo_desp', 'id_beneficiario', 'id_fornecedor', 'id_item'], 'integer'],
             [['qtde'], 'integer', 'min' => 1],
             [['data_emissao_NF', 'data_pgto'], 'safe'],
             [['pendencias', 'objetivo'], 'string'],
             [['status'], 'string', 'max' => 20],
-            [['numero_cheque', 'nf_recibo'], 'number'],
+            [['numero_cheque', 'nf_recibo'], 'string', 'max' => 50],
             [['id_beneficiario'], 'exist', 'skipOnError' => true, 'targetClass' => Beneficiario::className(), 'targetAttribute' => ['id_beneficiario' => 'id']],
             [['id_fornecedor'], 'exist', 'skipOnError' => true, 'targetClass' => Fornecedor::className(), 'targetAttribute' => ['id_fornecedor' => 'id']],
-            //[['id_item'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['id_item' => 'id']],
+            [['id_item'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['id_item' => 'id']],
         ];
     }
 
@@ -98,13 +98,13 @@ class Despesa extends \yii\db\ActiveRecord
         return $this->hasOne(Fornecedor::className(), ['id' => 'id_fornecedor']);
     }
 
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getItem()
-    // {
-    //     return $this->hasOne(Item::className(), ['id' => 'id_item']);
-    // }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItem()
+    {
+        return $this->hasOne(Item::className(), ['id' => 'id_item']);
+    }
 
     // /**
     //  * @return \yii\db\ActiveQuery
