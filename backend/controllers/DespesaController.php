@@ -78,8 +78,36 @@ class DespesaController extends Controller
         foreach($fornecedores as $f){
             $listaFornecedores[] = $f->nome;
         }
-        if ($despesaModel->load(Yii::$app->request->post()) && $despesaModel->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($despesaModel->load(Yii::$app->request->post())) {
+            //load data into models from request
+            $beneficiarioModel->load(Yii::$app->request->post());
+            $fornecedorModel->load(Yii::$app->request->post());
+            $itemModel->load(Yii::$app->request->post());
+
+            $beneficiarioModel->save();
+
+            //checa se fornecedor ja existe
+            $fornecedor = Fornecedor::find()->where([
+                'nome' => $fornecedorModel->nome,
+                'cpf_cnpj' => $fornecedorModel->cpf_cnpj
+            ])->one();
+            //se ja existe, apenas atribui o id para a despesa
+            if(isset($fornecedor) && $fornecedor->id){
+                $despesaModel->id_fornecedor = $fornecedor->id;
+            }else{
+                //se nao existe, um novo é criado
+                $fornecedorModel->save();
+                $despesaModel->id_fornecedor = $fornecedorModel->id;
+            }
+
+            $item = Item::find()->where(['numero_item' => $itemModel->numero_item])->one();
+            if(isset($item) && $item->id){
+                $despesaModel->id_item = $item->id;
+            }
+            $despesaModel->id_beneficiario = $beneficiarioModel->id;
+
+            $despesaModel->save();
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
