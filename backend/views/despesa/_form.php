@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\web\View;
 use kartik\date\DatePicker;
 use yii\jui\AutoComplete;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $despesaModel backend\models\Despesa */
@@ -93,7 +94,9 @@ $this->registerJs($script, View::POS_READY);
 
         </div>
         <div class="col-md-2">
-            <?= $form->field($fornecedorModel, 'cpf_cnpj')->textInput() ?>
+            <?= $form->field($fornecedorModel, 'cpf_cnpj')->widget(MaskedInput::className(), [
+            'mask' => ['999.999.999-99', '99.999.999/9999-99'],
+        ]) ?>
         </div>
         <div class="col-md-2">
             <?= $form->field($despesaModel, 'numero_cheque')->textInput(['maxlength' => true]) ?>

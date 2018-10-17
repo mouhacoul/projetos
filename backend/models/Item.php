@@ -15,16 +15,11 @@ use Yii;
  * @property int $quantidade
  * @property double $custo_unitario
  * @property int $tipo_item
- * @property int $id_projeto
  * @property string $descricao
+ * @property int $id_projeto
  *
  * @property Despesa[] $despesas
- * @property DiariaPassagem $diariaPassagem
  * @property Projeto $projeto
- * @property ItemDespesa[] $itemDespesas
- * @property Despesa[] $despesas0
- * @property ItemServicoMaterial $itemServicoMaterial
- * @property ServicoMaterial $servicoMaterial
  */
 class Item extends \yii\db\ActiveRecord
 {
@@ -43,11 +38,10 @@ class Item extends \yii\db\ActiveRecord
     {
         return [
             [['valor', 'custo_unitario'], 'number'],
-            [['justificativa'], 'string'],
+            [['justificativa', 'descricao'], 'string'],
             [['quantidade', 'tipo_item', 'id_projeto'], 'integer'],
             [['natureza'], 'string', 'max' => 40],
             [['numero_item'], 'string', 'max' => 100],
-            [['descricao'], 'string', 'max' => 200],
             // [['id_projeto'], 'exist', 'skipOnError' => true, 'targetClass' => Projeto::className(), 'targetAttribute' => ['id_projeto' => 'id']],
         ];
     }
@@ -66,8 +60,8 @@ class Item extends \yii\db\ActiveRecord
             'quantidade' => 'Quantidade',
             'custo_unitario' => 'Custo Unitario',
             'tipo_item' => 'Tipo Item',
+            'descricao' => 'Descricao',
             'id_projeto' => 'Id Projeto',
-            'descricao' => 'descrição',
         ];
     }
 
@@ -82,48 +76,8 @@ class Item extends \yii\db\ActiveRecord
     // /**
     //  * @return \yii\db\ActiveQuery
     //  */
-    // public function getDiariaPassagem()
-    // {
-    //     return $this->hasOne(DiariaPassagem::className(), ['id_item' => 'id']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
     // public function getProjeto()
     // {
     //     return $this->hasOne(Projeto::className(), ['id' => 'id_projeto']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getItemDespesas()
-    // {
-    //     return $this->hasMany(ItemDespesa::className(), ['id_item' => 'id']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getDespesas0()
-    // {
-    //     return $this->hasMany(Despesa::className(), ['id' => 'id_despesa'])->viaTable('item_despesa', ['id_item' => 'id']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getItemServicoMaterial()
-    // {
-    //     return $this->hasOne(ItemServicoMaterial::className(), ['id_item' => 'id']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getServicoMaterial()
-    // {
-    //     return $this->hasOne(ServicoMaterial::className(), ['id_item' => 'id']);
     // }
 }
