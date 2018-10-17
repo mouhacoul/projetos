@@ -27,8 +27,6 @@ use Yii;
  * @property Item $item
  * @property DespesaDiaria $despesaDiaria
  * @property DespesaPassagem $despesaPassagem
- * @property ItemDespesa[] $itemDespesas
- * @property Item[] $items
  */
 class Despesa extends \yii\db\ActiveRecord
 {
@@ -120,22 +118,6 @@ class Despesa extends \yii\db\ActiveRecord
     // public function getDespesaPassagem()
     // {
     //     return $this->hasOne(DespesaPassagem::className(), ['id_despesa' => 'id']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getItemDespesas()
-    // {
-    //     return $this->hasMany(ItemDespesa::className(), ['id_despesa' => 'id']);
-    // }
-
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getItems()
-    // {
-    //     return $this->hasMany(Item::className(), ['id' => 'id_item'])->viaTable('item_despesa', ['id_despesa' => 'id']);
     // }
 
     /**
