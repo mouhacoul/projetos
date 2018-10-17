@@ -36,15 +36,6 @@ CREATE TABLE `beneficiario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `beneficiario`
---
-
-LOCK TABLES `beneficiario` WRITE;
-/*!40000 ALTER TABLE `beneficiario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `beneficiario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `despesa`
 --
 
@@ -77,15 +68,6 @@ CREATE TABLE `despesa` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `despesa`
---
-
-LOCK TABLES `despesa` WRITE;
-/*!40000 ALTER TABLE `despesa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `despesa` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `despesa_diaria`
 --
 
@@ -102,15 +84,6 @@ CREATE TABLE `despesa_diaria` (
   CONSTRAINT `despesa_diaria_1_despesa_FK` FOREIGN KEY (`id_despesa`) REFERENCES `despesa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `despesa_diaria`
---
-
-LOCK TABLES `despesa_diaria` WRITE;
-/*!40000 ALTER TABLE `despesa_diaria` DISABLE KEYS */;
-/*!40000 ALTER TABLE `despesa_diaria` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `despesa_passagem`
@@ -131,40 +104,6 @@ CREATE TABLE `despesa_passagem` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `despesa_passagem`
---
-
-LOCK TABLES `despesa_passagem` WRITE;
-/*!40000 ALTER TABLE `despesa_passagem` DISABLE KEYS */;
-/*!40000 ALTER TABLE `despesa_passagem` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `diaria_passagem`
---
-
-DROP TABLE IF EXISTS `diaria_passagem`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `diaria_passagem` (
-  `id_item` int(11) NOT NULL,
-  `tipo` varchar(30) DEFAULT NULL,
-  `localidade` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id_item`),
-  CONSTRAINT `diaria_passagem_1_item_FK` FOREIGN KEY (`id_item`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `diaria_passagem`
---
-
-LOCK TABLES `diaria_passagem` WRITE;
-/*!40000 ALTER TABLE `diaria_passagem` DISABLE KEYS */;
-/*!40000 ALTER TABLE `diaria_passagem` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `fornecedor`
 --
 
@@ -179,15 +118,6 @@ CREATE TABLE `fornecedor` (
   UNIQUE KEY `fornecedor_UN` (`cpf_cnpj`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `fornecedor`
---
-
-LOCK TABLES `fornecedor` WRITE;
-/*!40000 ALTER TABLE `fornecedor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fornecedor` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `item`
@@ -205,95 +135,13 @@ CREATE TABLE `item` (
   `quantidade` int(11) DEFAULT NULL,
   `custo_unitario` double DEFAULT NULL,
   `tipo_item` tinyint(4) DEFAULT NULL,
+  `descricao` text,
   `id_projeto` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `item_projeto_FK` (`id_projeto`),
   CONSTRAINT `item_projeto_FK` FOREIGN KEY (`id_projeto`) REFERENCES `projeto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `item`
---
-
-LOCK TABLES `item` WRITE;
-/*!40000 ALTER TABLE `item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `item_despesa`
---
-
-DROP TABLE IF EXISTS `item_despesa`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `item_despesa` (
-  `id_despesa` int(11) NOT NULL,
-  `id_item` int(11) NOT NULL,
-  PRIMARY KEY (`id_despesa`,`id_item`),
-  KEY `item_despesa_item_FK` (`id_item`),
-  CONSTRAINT `item_despesa_despesa_FK` FOREIGN KEY (`id_despesa`) REFERENCES `despesa` (`id`),
-  CONSTRAINT `item_despesa_item_FK` FOREIGN KEY (`id_item`) REFERENCES `item` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `item_despesa`
---
-
-LOCK TABLES `item_despesa` WRITE;
-/*!40000 ALTER TABLE `item_despesa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item_despesa` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `item_servico_material`
---
-
-DROP TABLE IF EXISTS `item_servico_material`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `item_servico_material` (
-  `id_item` int(11) NOT NULL,
-  `especificacao` text,
-  PRIMARY KEY (`id_item`),
-  CONSTRAINT `item_servico_material_item_FK` FOREIGN KEY (`id_item`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `item_servico_material`
---
-
-LOCK TABLES `item_servico_material` WRITE;
-/*!40000 ALTER TABLE `item_servico_material` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item_servico_material` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `migration`
---
-
-DROP TABLE IF EXISTS `migration`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `migration` (
-  `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migration`
---
-
-LOCK TABLES `migration` WRITE;
-/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
-INSERT INTO `migration` VALUES ('m140506_102106_rbac_init',1458853453);
-/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `projeto`
@@ -319,15 +167,6 @@ CREATE TABLE `projeto` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `projeto`
---
-
-LOCK TABLES `projeto` WRITE;
-/*!40000 ALTER TABLE `projeto` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projeto` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `receita`
 --
 
@@ -345,15 +184,6 @@ CREATE TABLE `receita` (
   CONSTRAINT `receita_projeto_FK` FOREIGN KEY (`id_projeto`) REFERENCES `projeto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `receita`
---
-
-LOCK TABLES `receita` WRITE;
-/*!40000 ALTER TABLE `receita` DISABLE KEYS */;
-/*!40000 ALTER TABLE `receita` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `relatorio_prestacao`
@@ -377,39 +207,6 @@ CREATE TABLE `relatorio_prestacao` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `relatorio_prestacao`
---
-
-LOCK TABLES `relatorio_prestacao` WRITE;
-/*!40000 ALTER TABLE `relatorio_prestacao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `relatorio_prestacao` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `servico_material`
---
-
-DROP TABLE IF EXISTS `servico_material`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `servico_material` (
-  `especificacao` varchar(2000) DEFAULT NULL,
-  `id_item` int(11) NOT NULL,
-  PRIMARY KEY (`id_item`),
-  CONSTRAINT `servico_material_item_FK` FOREIGN KEY (`id_item`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `servico_material`
---
-
-LOCK TABLES `servico_material` WRITE;
-/*!40000 ALTER TABLE `servico_material` DISABLE KEYS */;
-/*!40000 ALTER TABLE `servico_material` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `termo_aditivo`
 --
 
@@ -427,15 +224,6 @@ CREATE TABLE `termo_aditivo` (
   CONSTRAINT `termo_aditivo_projeto_FK` FOREIGN KEY (`id_projeto`) REFERENCES `projeto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `termo_aditivo`
---
-
-LOCK TABLES `termo_aditivo` WRITE;
-/*!40000 ALTER TABLE `termo_aditivo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `termo_aditivo` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -488,16 +276,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (78,'Usuário Todo Poderoso','878.832.797-34',NULL,'dr-kWlFrkClQ-u-D8bscat9gfqapwxKI','$2y$13$lPFaaNl2E3ZcfbNUC5VzCu5DPQ0D7MtdSGby6Djy9TIgBbtbQ5T7y',NULL,'utp@icomp.ufam.edu.br',10,NULL,NULL,'2018-09-21 11:10:56','2018-09-21 11:10:56','2018-09-21 11:10:56','1','1','1','1',NULL,'','','','','','','','','','','',NULL,NULL,NULL,'',NULL,NULL,''),(80,'David Fernandes','600.808.762-34',NULL,'LT6hrlCNFGGG7X_5h2MuyHAfYLHaImfv','$2y$13$pweiTb780XjoNOkFfFs4qeVx0J4ZSZYBmI/go6flDPJScneyR/JPy',NULL,'david@teste.com',10,'2018-09-24 13:49:24','2018-09-24 13:49:24','2018-09-24 13:49:24','2018-09-24 13:49:24','2018-09-24 13:49:24','0','0','1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -508,4 +286,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-14 22:59:53
+-- Dump completed on 2018-10-17 19:23:45
