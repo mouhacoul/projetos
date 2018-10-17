@@ -15,5 +15,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Cadastrar', ['despesa/create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php 
+    
 
+    $dataProvider = new \yii\data\SqlDataProvider([
+        'sql' => 'select * from despesa',
+    ]);
+    ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+           // ['add'=>"asd"],
+            'valor_unitario',
+            'qtde',
+            'status',
+            'numero_cheque',
+            //['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 </div>

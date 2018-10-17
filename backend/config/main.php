@@ -20,7 +20,7 @@ return [
     'modules' => [
 	'gii' => [
             'class' => 'yii\gii\Module',
-            'allowedIPs' => ['127.0.0.1', '::1', '192.168.1.101'],
+            'allowedIPs' => ['127.0.0.1', '::1', '192.168.1.101','*'],
             //'password' => '123456'
         ],
        'datecontrol' =>  [

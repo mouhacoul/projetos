@@ -67,7 +67,7 @@ class Despesa extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'valor_unitario' => 'Valor Unitario',
-            'qtde' => 'Qtde',
+            'qtde' => 'Quantidade',
             'tipo_desp' => 'Tipo Desp',
             'status' => 'Status',
             'data_emissao_NF' => 'Data Emissao N F',
