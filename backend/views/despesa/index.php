@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\models\Item;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\DespesaSearch */
@@ -15,24 +16,41 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Cadastrar', ['despesa/create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php 
-    
-
-    $dataProvider = new \yii\data\SqlDataProvider([
-        'sql' => 'select * from despesa',
-    ]);
-    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-           // ['add'=>"asd"],
-            'valor_unitario',
-            'qtde',
-            'status',
-            'numero_cheque',
-            //['class' => 'yii\grid\ActionColumn'],
+            
+            'id',
+            [
+                'attribute' => 'id_item',
+                'label' => 'Item',
+                'value' => function($model) {
+                    $item = Item::findOne($model->id_item);
+                    return isset($item) ? $item->descricao : "Item não registrado";
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function($model){
+                    return $model->getStatus()[$model->status];
+                }
+            ],
+            'objetivo',
+            'pendencias',
+            [
+                'label' => 'Valor total',
+                'value' => function($model){
+                    return "R$" . ($model->valor_unitario * $model->qtde);
+                }
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} &nbsp;{delete}'
+            ],
         ],
+        'emptyText' => 'Nenhum resultado encontrado.',
+        'showOnEmpty' => true,
     ]); ?>
 </div>
