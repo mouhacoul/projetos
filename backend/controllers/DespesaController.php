@@ -56,8 +56,18 @@ class DespesaController extends Controller
      */
     public function actionView($id)
     {
+        $despesaModel = $this->findModel($id);
+        if(isset($despesaModel)){
+            $fornecedorModel = Fornecedor::findOne($despesaModel->id_fornecedor);
+            $beneficiarioModel = Beneficiario::findOne($despesaModel->id_beneficiario);
+            $itemModel = Item::findOne($despesaModel->id_item);
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'despesaModel' => $despesaModel,
+            'fornecedorModel' => $fornecedorModel,
+            'beneficiarioModel' => $beneficiarioModel,
+            'itemModel' => $itemModel
         ]);
     }
 
@@ -84,6 +94,11 @@ class DespesaController extends Controller
             $fornecedorModel->load(Yii::$app->request->post());
             $itemModel->load(Yii::$app->request->post());
 
+            $data_pgto = \DateTime::createFromFormat('d/m/Y', $despesaModel->data_pgto);
+            $data_emissao_NF = \DateTime::createFromFormat('d/m/Y', $despesaModel->data_emissao_NF);
+            $despesaModel->data_pgto = $data_pgto->format('Y-m-d');
+            $despesaModel->data_emissao_NF = $data_emissao_NF->format('Y-m-d');
+
             if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
                 $beneficiarioModel->save();
                 $despesaModel->id_beneficiario = $beneficiarioModel->id;
@@ -100,7 +115,7 @@ class DespesaController extends Controller
             }
 
             $despesaModel->save();
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $despesaModel->id]);
             
         }
 
@@ -148,6 +163,9 @@ class DespesaController extends Controller
             $beneficiarioModel = isset($beneficiarioModel) ? $beneficiarioModel : new Beneficiario();
             $itemModel = isset($itemModel) ? $itemModel : new Item();
 
+            $despesaModel->data_pgto = date('d/m/Y', strtotime($despesaModel->data_pgto));
+            $despesaModel->data_emissao_NF = date('d/m/Y', strtotime($despesaModel->data_emissao_NF));
+
             $fornecedores = $fornecedorModel->find()->orderBy('nome ASC')->all();
             $listaFornecedores = [];
             foreach($fornecedores as $f){
@@ -161,6 +179,11 @@ class DespesaController extends Controller
             $beneficiarioModel->load(Yii::$app->request->post());
             $fornecedorModel->load(Yii::$app->request->post());
             $itemModel->load(Yii::$app->request->post());
+
+            $data_pgto = \DateTime::createFromFormat('d/m/Y', $despesaModel->data_pgto);
+            $data_emissao_NF = \DateTime::createFromFormat('d/m/Y', $despesaModel->data_emissao_NF);
+            $despesaModel->data_pgto = $data_pgto->format('Y-m-d');
+            $despesaModel->data_emissao_NF = $data_emissao_NF->format('Y-m-d');
 
             if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
                 $beneficiario = Beneficiario::find()->where(['rg' => $beneficiarioModel->rg])->one();
