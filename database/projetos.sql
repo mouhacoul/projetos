@@ -32,8 +32,18 @@ CREATE TABLE `beneficiario` (
   `nivel_academico` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `beneficiario_UN` (`rg`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `beneficiario`
+--
+
+LOCK TABLES `beneficiario` WRITE;
+/*!40000 ALTER TABLE `beneficiario` DISABLE KEYS */;
+INSERT INTO `beneficiario` VALUES (1,'Novo nome','2121554245','ssp-am','superior');
+/*!40000 ALTER TABLE `beneficiario` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `despesa`
@@ -64,8 +74,18 @@ CREATE TABLE `despesa` (
   CONSTRAINT `despesa_beneficiario_FK` FOREIGN KEY (`id_beneficiario`) REFERENCES `beneficiario` (`id`),
   CONSTRAINT `despesa_fornecedor_FK` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedor` (`id`),
   CONSTRAINT `despesa_item_FK` FOREIGN KEY (`id_item`) REFERENCES `item` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `despesa`
+--
+
+LOCK TABLES `despesa` WRITE;
+/*!40000 ALTER TABLE `despesa` DISABLE KEYS */;
+INSERT INTO `despesa` VALUES (1,123,1,2,'1','2018-10-19 00:00:00','pp','22222222222222','2018-10-17 00:00:00','1111111111111','desdesaaaaa',1,2,1);
+/*!40000 ALTER TABLE `despesa` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `despesa_diaria`
@@ -86,6 +106,15 @@ CREATE TABLE `despesa_diaria` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `despesa_diaria`
+--
+
+LOCK TABLES `despesa_diaria` WRITE;
+/*!40000 ALTER TABLE `despesa_diaria` DISABLE KEYS */;
+/*!40000 ALTER TABLE `despesa_diaria` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `despesa_passagem`
 --
 
@@ -104,6 +133,15 @@ CREATE TABLE `despesa_passagem` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `despesa_passagem`
+--
+
+LOCK TABLES `despesa_passagem` WRITE;
+/*!40000 ALTER TABLE `despesa_passagem` DISABLE KEYS */;
+/*!40000 ALTER TABLE `despesa_passagem` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `fornecedor`
 --
 
@@ -118,6 +156,16 @@ CREATE TABLE `fornecedor` (
   UNIQUE KEY `fornecedor_UN` (`cpf_cnpj`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fornecedor`
+--
+
+LOCK TABLES `fornecedor` WRITE;
+/*!40000 ALTER TABLE `fornecedor` DISABLE KEYS */;
+INSERT INTO `fornecedor` VALUES (1,'Teste CPF','012.345.678-90'),(2,'Teste CNPJ Mudado','12.378.945/6012-10'),(3,'CNPJ2','01.234.567/8901-05');
+/*!40000 ALTER TABLE `fornecedor` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `item`
@@ -140,8 +188,18 @@ CREATE TABLE `item` (
   PRIMARY KEY (`id`),
   KEY `item_projeto_FK` (`id_projeto`),
   CONSTRAINT `item_projeto_FK` FOREIGN KEY (`id_projeto`) REFERENCES `projeto` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item`
+--
+
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (1,NULL,NULL,'01','',1,12,2,'Desc item 01',1);
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `projeto`
@@ -163,8 +221,18 @@ CREATE TABLE `projeto` (
   `numero_fapeam_outorga` varchar(50) DEFAULT NULL,
   `publicacao_diario_oficial` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projeto`
+--
+
+LOCK TABLES `projeto` WRITE;
+/*!40000 ALTER TABLE `projeto` DISABLE KEYS */;
+INSERT INTO `projeto` VALUES (1,'123','2018-10-28 00:00:00','2019-10-10 00:00:00','Coordenador',NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `projeto` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `receita`
@@ -184,6 +252,15 @@ CREATE TABLE `receita` (
   CONSTRAINT `receita_projeto_FK` FOREIGN KEY (`id_projeto`) REFERENCES `projeto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receita`
+--
+
+LOCK TABLES `receita` WRITE;
+/*!40000 ALTER TABLE `receita` DISABLE KEYS */;
+/*!40000 ALTER TABLE `receita` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `relatorio_prestacao`
@@ -207,6 +284,15 @@ CREATE TABLE `relatorio_prestacao` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `relatorio_prestacao`
+--
+
+LOCK TABLES `relatorio_prestacao` WRITE;
+/*!40000 ALTER TABLE `relatorio_prestacao` DISABLE KEYS */;
+/*!40000 ALTER TABLE `relatorio_prestacao` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `termo_aditivo`
 --
 
@@ -224,6 +310,15 @@ CREATE TABLE `termo_aditivo` (
   CONSTRAINT `termo_aditivo_projeto_FK` FOREIGN KEY (`id_projeto`) REFERENCES `projeto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `termo_aditivo`
+--
+
+LOCK TABLES `termo_aditivo` WRITE;
+/*!40000 ALTER TABLE `termo_aditivo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `termo_aditivo` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -276,6 +371,16 @@ CREATE TABLE `user` (
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (78,'Usuário Todo Poderoso','878.832.797-34',NULL,'dr-kWlFrkClQ-u-D8bscat9gfqapwxKI','$2y$13$lPFaaNl2E3ZcfbNUC5VzCu5DPQ0D7MtdSGby6Djy9TIgBbtbQ5T7y',NULL,'utp@icomp.ufam.edu.br',10,NULL,NULL,'2018-09-21 11:10:56','2018-09-21 11:10:56','2018-09-21 11:10:56','1','1','1','1',NULL,'','','','','','','','','','','',NULL,NULL,NULL,'',NULL,NULL,''),(80,'David Fernandes','600.808.762-34',NULL,'LT6hrlCNFGGG7X_5h2MuyHAfYLHaImfv','$2y$13$pweiTb780XjoNOkFfFs4qeVx0J4ZSZYBmI/go6flDPJScneyR/JPy',NULL,'david@teste.com',10,'2018-09-24 13:49:24','2018-09-24 13:49:24','2018-09-24 13:49:24','2018-09-24 13:49:24','2018-09-24 13:49:24','0','0','1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -286,4 +391,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-17 19:23:45
+-- Dump completed on 2018-10-18 16:21:36
