@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\web\View;
-use kartik\date\DatePicker;
 use yii\jui\AutoComplete;
 use yii\widgets\MaskedInput;
 
@@ -105,25 +104,17 @@ $this->registerJs($script, View::POS_READY);
 
     <div class="row">
         <div class="col-md-2">
-        <?= $form->field($despesaModel, 'data_pgto')->widget(DatePicker::classname(), [
-            'options' => ['placeholder' => 'yyyy-mm-dd'],
-            'pluginOptions' => [
-                'autoclose'=>true,
-                'format' => 'yyyy-mm-dd'
-            ]
-        ]);?>
+        <?= $form->field($despesaModel, 'data_pgto')->widget(MaskedInput::className(), [
+            'clientOptions' => ['alias' =>  'date']
+        ]) ?>
         </div>
         <div class="col-md-2">
             <?= $form->field($despesaModel, 'nf_recibo')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-2">
-            <?= $form->field($despesaModel, 'data_emissao_NF')->widget(DatePicker::classname(), [
-                'options' => ['placeholder' => 'yyyy-mm-dd'],
-                'pluginOptions' => [
-                    'autoclose'=>true,
-                    'format' => 'yyyy-mm-dd'
-                ]
-            ]);?>
+            <?= $form->field($despesaModel, 'data_emissao_NF')->widget(MaskedInput::className(), [
+            'clientOptions' => ['alias' =>  'date']
+        ]) ?>
         </div>
         <div class="col-md-1">
             <?= $form->field($despesaModel, 'valor_unitario')->textInput() ?>
