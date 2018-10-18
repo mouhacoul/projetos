@@ -138,14 +138,70 @@ class DespesaController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $despesaModel = $this->findModel($id);
+        if(isset($despesaModel)){
+            $fornecedorModel = Fornecedor::findOne($despesaModel->id_fornecedor);
+            $beneficiarioModel = Beneficiario::findOne($despesaModel->id_beneficiario);
+            $itemModel = Item::findOne($despesaModel->id_item);
+    
+            $fornecedorModel = isset($fornecedorModel) ? $fornecedorModel : new Fornecedor();
+            $beneficiarioModel = isset($beneficiarioModel) ? $beneficiarioModel : new Beneficiario();
+            $itemModel = isset($itemModel) ? $itemModel : new Item();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $fornecedores = $fornecedorModel->find()->orderBy('nome ASC')->all();
+            $listaFornecedores = [];
+            foreach($fornecedores as $f){
+                $listaFornecedores[] = $f->nome;
+            }
+    
+        }
+        
+        if ($despesaModel->load(Yii::$app->request->post())) {
+
+            $beneficiarioModel->load(Yii::$app->request->post());
+            $fornecedorModel->load(Yii::$app->request->post());
+            $itemModel->load(Yii::$app->request->post());
+
+            if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
+                $beneficiario = Beneficiario::find()->where(['rg' => $beneficiarioModel->rg])->one();
+                if(!isset($beneficiario)){
+                    $beneficiarioModel->save();
+                    $despesaModel->id_beneficiario = $beneficiarioModel->id;
+                }else{
+                    if($beneficiarioModel->nome != "") $beneficiario->nome = $beneficiarioModel->nome;
+                    if($beneficiarioModel->orgao_emissor != "") $beneficiario->orgao_emissor = $beneficiarioModel->orgao_emissor;
+                    if($beneficiarioModel->nivel_academico != "") $beneficiario->nivel_academico = $beneficiarioModel->nivel_academico;
+                    $beneficiario->save();
+                    $despesaModel->id_beneficiario = $beneficiario->id;
+                }
+            }else{
+                $despesaModel->id_beneficiario = null;
+            }
+
+            if(!empty($fornecedorModel->nome) || !empty($fornecedorModel->cpf_cnpj)){
+                $fornecedor = Fornecedor::find()->where(['cpf_cnpj' => $fornecedorModel->cpf_cnpj])->one();
+                if(!isset($fornecedor)){
+                    $fornecedorModel->save();
+                    $despesaModel->id_fornecedor = $fornecedorModel->id;    
+                }else{
+                    if($fornecedor->nome != $fornecedorModel->nome){
+                        $fornecedorModel->save();
+                    }
+                    $despesaModel->id_fornecedor = $fornecedor->id;
+                }
+            }
+
+            $despesaModel->save();
+            return $this->redirect(['index']);
+            
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'despesaModel' => $despesaModel,
+            'fornecedorModel' => $fornecedorModel,
+            'beneficiarioModel' => $beneficiarioModel,
+            'itemModel' => $itemModel,
+            'fornecedores' => $listaFornecedores
         ]);
     }
 
