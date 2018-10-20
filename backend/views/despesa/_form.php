@@ -11,8 +11,17 @@ use yii\widgets\MaskedInput;
 /* @var $despesaModel backend\models\Despesa */
 /* @var $form yii\widgets\ActiveForm */
 $script = <<< JS
+    const TIPOS = {
+        MATERIAL_SERVICO: [1, 2, 7],
+        PASSAGEM_NACIONAL: 3,
+        PASSAGEM_INTERNACIONAL: 4,
+        DIARIA_NACIONAL: 5,
+        DIARIA_INTERNACIONAL: 6
+    };
+
     $(document).ready(function(){
         $('input').attr('autocomplete','off');
+        toggleFields();
         $('#despesa-valor_unitario').on("keyup", function(){
             $('#despesa-valor_unitario').val($('#despesa-valor_unitario').val().replace(',', '.'));
             let valorTotal = $('#despesa-valor_unitario').val() * $('#despesa-qtde').val();
@@ -24,12 +33,23 @@ $script = <<< JS
         });
         $('#despesa-tipo_desp').on("change", function(){
             let tipo = $('#despesa-tipo_desp').val();
-            if(tipo !== 2){
+            toggleFields();
+            if(tipo !== TIPOS.MATERIAL_CONSUMO){
                 alert('Ainda não é possível cadastrar este tipo de item!');
                 $('#despesa-tipo_desp').val(2);
+                toggleFields();
             }
         });
     });
+
+    function toggleFields() {
+        let tipo = $('#despesa-tipo_desp').val();
+        if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) !== -1){
+            $('.beneficiario-fields').hide();
+        }else{
+            $('.beneficiario-fields').show();
+        }
+    }
 JS;
 $this->registerJs($script, View::POS_READY);
 ?>
@@ -137,16 +157,16 @@ $this->registerJs($script, View::POS_READY);
     </div>
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'nome')->textInput() ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'rg')->textInput()?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'orgao_emissor')->textInput() ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'nivel_academico')->textInput() ?>
         </div>
         <div class="col-md-2">

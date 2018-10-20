@@ -45,10 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "R$" . ($model->valor_unitario * $model->qtde);
                 }
             ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} &nbsp;{delete}'
-            ],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
         'emptyText' => 'Nenhum resultado encontrado.',
         'showOnEmpty' => true,
