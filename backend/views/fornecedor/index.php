@@ -18,6 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Cadastrar', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?php if (Yii::$app->session->hasFlash('fornecedor_w_desp')): ?>
+        <div class="alert alert-danger alert-dismissable">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <?= Yii::$app->session->getFlash('fornecedor_w_desp') ?>
+        </div>
+    <?php endif; ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
