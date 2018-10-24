@@ -136,13 +136,13 @@ $this->registerJs($script, View::POS_READY);
             'clientOptions' => ['alias' =>  'date']
         ]) ?>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <?= $form->field($despesaModel, 'valor_unitario')->textInput() ?>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <?= $form->field($despesaModel, 'qtde')->textInput(['value' => 1]) ?>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label for="valor_total">Valor total</label>
             <?= Html::textInput('valor_total', 'R$' + $despesaModel->valor_unitario * $despesaModel->qtde, [
                 'class' => 'form-control', 
@@ -151,29 +151,32 @@ $this->registerJs($script, View::POS_READY);
                 'autocomplete' => 'off'
             ]);?>
         </div>
-        <div class="col-md-3">
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($despesaModel, 'objetivo')->textInput() ?>
+        </div>
+        <div class="col-md-4">
             <?= $form->field($despesaModel, 'pendencias')->textInput() ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($despesaModel, 'status')->dropdownList($despesaModel->getStatus()) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-2 beneficiario-fields">
+        <div class="col-md-3 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'nome')->textInput() ?>
         </div>
-        <div class="col-md-2 beneficiario-fields">
+        <div class="col-md-3 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'rg')->textInput()?>
         </div>
-        <div class="col-md-2 beneficiario-fields">
+        <div class="col-md-3 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'orgao_emissor')->textInput() ?>
         </div>
-        <div class="col-md-2 beneficiario-fields">
+        <div class="col-md-3 beneficiario-fields">
             <?= $form->field($beneficiarioModel, 'nivel_academico')->textInput() ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($despesaModel, 'objetivo')->textInput() ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($despesaModel, 'status')->dropdownList($despesaModel->getStatus()) ?>
         </div>
     </div>
 
