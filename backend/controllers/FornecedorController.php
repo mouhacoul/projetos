@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Fornecedor;
+use backend\models\Despesa;
 use backend\models\FornecedorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -104,7 +105,20 @@ class FornecedorController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $fornecedor = $this->findModel($id);
+        $despesa = Despesa::find()->where(['id_fornecedor' => $fornecedor->id])->one();
+        if(isset($despesa)){
+            Yii::$app->session->setFlash('danger', [
+                'type' => 'danger',
+                'duration' => 10 * 1000,
+                'message' => "O fornecedor '$fornecedor->nome' não pode ser deletado pois já existe despesas atreladas ao mesmo.",
+                'title' => "Erro",
+                'positonY' => 'top',
+                'positonX' => 'center',
+            ]);
+        }else{
+            $fornecedor->delete();
+        }
 
         return $this->redirect(['index']);
     }
