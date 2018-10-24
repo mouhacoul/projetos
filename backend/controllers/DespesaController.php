@@ -96,8 +96,8 @@ class DespesaController extends Controller
 
             $data_pgto = \DateTime::createFromFormat('d/m/Y', $despesaModel->data_pgto);
             $data_emissao_NF = \DateTime::createFromFormat('d/m/Y', $despesaModel->data_emissao_NF);
-            $despesaModel->data_pgto = $data_pgto->format('Y-m-d');
-            $despesaModel->data_emissao_NF = $data_emissao_NF->format('Y-m-d');
+            $despesaModel->data_pgto = isset($data_pgto) && !empty($data_pgto) ? $data_pgto->format('Y-m-d') : null;
+            $despesaModel->data_emissao_NF = isset($data_emissao_NF) && !empty($data_emissao_NF) ? $data_emissao_NF->format('Y-m-d') : null;
 
             if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
                 $beneficiarioModel->save();

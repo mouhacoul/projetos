@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'valor_unitario',
                 'value' => function($model){
-                    return "R$" . $model->valor_unitario;
+                    return "R$" . ($model->valor_unitario ? $model->valor_unitario : "0");
                 }
             ],
             'qtde',
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'data_emissao_NF',
                 'value' => function($model){
-                    return date('d/m/Y', strtotime($model->data_emissao_NF));
+                    return isset($model->data_emissao_NF) ? date('d/m/Y', strtotime($model->data_emissao_NF)) : null;
                 }
             ],
             'pendencias:ntext',
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'data_pgto',
                 'value' => function($model){
-                    return date('d/m/Y', strtotime($model->data_pgto));
+                    return isset($model->data_pgto) ? date('d/m/Y', strtotime($model->data_pgto)) : null;
                 }
             ],
             'nf_recibo',
