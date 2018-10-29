@@ -18,7 +18,7 @@ $script = <<< JS
         DIARIA_NACIONAL: 5,
         DIARIA_INTERNACIONAL: 6
     };
-
+    
     $(document).ready(function(){
         $('input').attr('autocomplete','off');
         toggleFields();
@@ -34,9 +34,9 @@ $script = <<< JS
         $('#despesa-tipo_desp').on("change", function(){
             let tipo = $('#despesa-tipo_desp').val();
             toggleFields();
-            if(tipo !== TIPOS.MATERIAL_CONSUMO){
+            if(tipo != TIPOS.MATERIAL_SERVICO[0] && tipo != TIPOS.MATERIAL_SERVICO[1] && tipo != TIPOS.MATERIAL_SERVICO[2]){ 
                 alert('Ainda não é possível cadastrar este tipo de item!');
-                $('#despesa-tipo_desp').val(2);
+                $('#despesa-tipo_desp').val(null);
                 toggleFields();
             }
         });
@@ -60,7 +60,7 @@ $this->registerJs($script, View::POS_READY);
 
     <div class="row">
         <div class="col-md-2">
-            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => 2]) ?>
+            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => null]) ?>
         </div>
         <div class="col-md-1">
             <?= $form->field($itemModel, 'numero_item')->textInput([
