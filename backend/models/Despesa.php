@@ -64,19 +64,19 @@ class Despesa extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'valor_unitario' => 'Valor Unitario',
+            'valor_unitario' => 'Valor unitário',
             'qtde' => 'Quantidade',
-            'tipo_desp' => 'Tipo Desp',
+            'tipo_desp' => 'Tipo de despesa',
             'status' => 'Status',
-            'data_emissao_NF' => 'Data Emissao N F',
-            'pendencias' => 'Pendencias',
-            'numero_cheque' => 'Numero Cheque',
-            'data_pgto' => 'Data Pgto',
-            'nf_recibo' => 'Nf Recibo',
+            'data_emissao_NF' => 'Data de emissão NF',
+            'pendencias' => 'Pendências',
+            'numero_cheque' => 'Número do cheque',
+            'data_pgto' => 'Data de pagamento',
+            'nf_recibo' => 'NF/Recibo',
             'objetivo' => 'Objetivo',
-            'id_beneficiario' => 'Id Beneficiario',
-            'id_fornecedor' => 'Id Fornecedor',
-            'id_item' => 'Id Item',
+            'id_beneficiario' => 'Id. Beneficiario',
+            'id_fornecedor' => 'Id. Fornecedor',
+            'id_item' => 'Id. Item',
         ];
     }
 
