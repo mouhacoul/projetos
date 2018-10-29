@@ -34,17 +34,17 @@ $script = <<< JS
         $('#despesa-tipo_desp').on("change", function(){
             let tipo = $('#despesa-tipo_desp').val();
             toggleFields();
-            if(tipo != TIPOS.MATERIAL_SERVICO[0] && tipo != TIPOS.MATERIAL_SERVICO[1] && tipo != TIPOS.MATERIAL_SERVICO[2]){ 
+            if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) === -1){ 
                 alert('Ainda não é possível cadastrar este tipo de item!');
                 $('#despesa-tipo_desp').val(null);
                 toggleFields();
             }
         });
     });
-
+    
     function toggleFields() {
         let tipo = $('#despesa-tipo_desp').val();
-        if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) !== -1){
+        if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) !== -1 || tipo === null){
             $('.beneficiario-fields').hide();
         }else{
             $('.beneficiario-fields').show();
