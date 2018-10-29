@@ -140,7 +140,7 @@ $this->registerJs($script, View::POS_READY);
             <?= $form->field($despesaModel, 'valor_unitario')->textInput() ?>
         </div>
         <div class="col-md-2">
-            <?= $form->field($despesaModel, 'qtde')->textInput(['value' => 1]) ?>
+            <?= $form->field($despesaModel, 'qtde')->textInput() ?>
         </div>
         <div class="col-md-2">
             <label for="valor_total">Valor total</label>
