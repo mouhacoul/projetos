@@ -144,8 +144,14 @@ class Despesa extends \yii\db\ActiveRecord
     public function getStatus()
     {
         $status = [
-            1 => 'Emitida',
-            2 => 'Pendente'
+            1 => '',
+            2 => 'Emitida',
+            3 => 'Pago',
+            4 => 'Pendente',
+            5 => 'Finalizado',
+            6 => 'Entregue',
+            7 => 'Mudança de trecho',
+            8 => 'Mover despesa'
         ];
 
         return $status;
