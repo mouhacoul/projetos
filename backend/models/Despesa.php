@@ -43,9 +43,10 @@ class Despesa extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['valor_unitario'], 'number'],
-            [['tipo_desp', 'id_beneficiario', 'id_fornecedor', 'id_item'], 'integer'],
+        return 
+            [[['valor_unitario'], 'number'],
+            [['tipo_desp'], 'required'],
+            [['id_beneficiario', 'id_fornecedor', 'id_item'], 'integer'],
             [['qtde'], 'integer', 'min' => 1],
             [['data_emissao_NF', 'data_pgto'], 'safe'],
             [['pendencias', 'objetivo'], 'string'],

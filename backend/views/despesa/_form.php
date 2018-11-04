@@ -22,6 +22,7 @@ $script = <<< JS
     $(document).ready(function(){
         $('input').attr('autocomplete','off');
         toggleFields();
+        $("#tipo_desp-alert").hide()
         $('#despesa-valor_unitario').on("keyup", function(){
             $('#despesa-valor_unitario').val($('#despesa-valor_unitario').val().replace(',', '.'));
             let valorTotal = $('#despesa-valor_unitario').val() * $('#despesa-qtde').val();
@@ -60,7 +61,7 @@ $this->registerJs($script, View::POS_READY);
 
     <div class="row">
         <div class="col-md-2">
-            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => null]) ?>
+            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => null])?>
         </div>
         <div class="col-md-1">
             <?= $form->field($itemModel, 'numero_item')->textInput([

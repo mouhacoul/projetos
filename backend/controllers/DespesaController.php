@@ -99,6 +99,7 @@ class DespesaController extends Controller
             $despesaModel->data_pgto = isset($data_pgto) && !empty($data_pgto) ? $data_pgto->format('Y-m-d') : null;
             $despesaModel->data_emissao_NF = isset($data_emissao_NF) && !empty($data_emissao_NF) ? $data_emissao_NF->format('Y-m-d') : null;
 
+
             if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
                 $beneficiarioModel->save();
                 $despesaModel->id_beneficiario = $beneficiarioModel->id;
@@ -116,9 +117,8 @@ class DespesaController extends Controller
 
             $despesaModel->save();
             return $this->redirect(['view', 'id' => $despesaModel->id]);
-            
         }
-
+                     
         return $this->render('create', [
             'despesaModel' => $despesaModel,
             'fornecedorModel' => $fornecedorModel,
