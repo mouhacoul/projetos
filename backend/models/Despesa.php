@@ -43,9 +43,10 @@ class Despesa extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['valor_unitario'], 'number'],
-            [['tipo_desp', 'id_beneficiario', 'id_fornecedor', 'id_item'], 'integer'],
+        return 
+            [[['valor_unitario'], 'number'],
+            [['tipo_desp'], 'required'],
+            [['id_beneficiario', 'id_fornecedor', 'id_item'], 'integer'],
             [['qtde'], 'integer', 'min' => 1],
             [['data_emissao_NF', 'data_pgto'], 'safe'],
             [['pendencias', 'objetivo'], 'string'],
@@ -126,14 +127,13 @@ class Despesa extends \yii\db\ActiveRecord
     public function getTiposDespesa()
     {
         $tipos = [
-            1 => '',
-            2 => 'Material permanente',
-            3 => 'Material de consumo',
-            4 => 'Passagem nacional',
-            5 => 'Passagem internacional',
-            6 => 'Diária nacional',
-            7 => 'Diária internacional',
-            8 => 'Serviço de terceiro'
+            1 => 'Material permanente',
+            2 => 'Material de consumo',
+            3 => 'Passagem nacional',
+            4 => 'Passagem internacional',
+            5 => 'Diária nacional',
+            6 => 'Diária internacional',
+            7 => 'Serviço de terceiro'
         ];
 
         return $tipos;

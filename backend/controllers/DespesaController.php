@@ -82,7 +82,6 @@ class DespesaController extends Controller
         $fornecedorModel = new Fornecedor();
         $beneficiarioModel = new Beneficiario();
         $itemModel = new Item();
-        $erro = false;
 
         $fornecedores = $fornecedorModel->find()->orderBy('nome ASC')->all();
         $listaFornecedores = [];
@@ -100,10 +99,6 @@ class DespesaController extends Controller
             $despesaModel->data_pgto = isset($data_pgto) && !empty($data_pgto) ? $data_pgto->format('Y-m-d') : null;
             $despesaModel->data_emissao_NF = isset($data_emissao_NF) && !empty($data_emissao_NF) ? $data_emissao_NF->format('Y-m-d') : null;
 
-            if(empty($despesaModel->tipo_desp) || $despesaModel->tipo_desp == 1){
-                $erro = true;
-                
-            }
 
             if(!empty($beneficiarioModel->nome) || !empty($beneficiarioModel->rg)){
                 $beneficiarioModel->save();
@@ -119,12 +114,9 @@ class DespesaController extends Controller
                     $despesaModel->id_fornecedor = $fornecedor->id;
                 }
             }
-            if($erro == false){
+
             $despesaModel->save();
             return $this->redirect(['view', 'id' => $despesaModel->id]);
-            
-            }
-  
         }
                      
         return $this->render('create', [
@@ -134,8 +126,6 @@ class DespesaController extends Controller
             'itemModel' => $itemModel,
             'fornecedores' => $listaFornecedores
         ]);
-
-
     }
 
     public function actionGetfornecedorinfo($nome){
