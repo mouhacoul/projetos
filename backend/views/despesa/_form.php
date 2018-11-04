@@ -12,16 +12,17 @@ use yii\widgets\MaskedInput;
 /* @var $form yii\widgets\ActiveForm */
 $script = <<< JS
     const TIPOS = {
-        MATERIAL_SERVICO: [1, 2, 7],
-        PASSAGEM_NACIONAL: 3,
-        PASSAGEM_INTERNACIONAL: 4,
-        DIARIA_NACIONAL: 5,
-        DIARIA_INTERNACIONAL: 6
+        MATERIAL_SERVICO: [2, 3, 8],
+        PASSAGEM_NACIONAL: 4,
+        PASSAGEM_INTERNACIONAL: 5,
+        DIARIA_NACIONAL: 6,
+        DIARIA_INTERNACIONAL: 7
     };
     
     $(document).ready(function(){
         $('input').attr('autocomplete','off');
         toggleFields();
+        $("#tipo_desp-alert").hide()
         $('#despesa-valor_unitario').on("keyup", function(){
             $('#despesa-valor_unitario').val($('#despesa-valor_unitario').val().replace(',', '.'));
             let valorTotal = $('#despesa-valor_unitario').val() * $('#despesa-qtde').val();
@@ -34,17 +35,28 @@ $script = <<< JS
         $('#despesa-tipo_desp').on("change", function(){
             let tipo = $('#despesa-tipo_desp').val();
             toggleFields();
-            if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) === -1){ 
+            if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) === -1 && parseInt(tipo) !== 1){ 
                 alert('Ainda não é possível cadastrar este tipo de item!');
                 $('#despesa-tipo_desp').val(null);
                 toggleFields();
+            }
+            if($("#despesa-tipo_desp").val() === null || tipo == 1){
+                    $("#tipo_desp-alert").show();
+            }
+            else{
+                    $("#tipo_desp-alert").hide();
+            }
+        });
+        $('#save-btn').on("click", function(){
+            if($("#despesa-tipo_desp").val() === null || $("#despesa-tipo_desp").val() == 1){
+                alert("Não foi possível cadastrar a despesa pois o campo Tipo de Despesa não foi preenchido!")
             }
         });
     });
     
     function toggleFields() {
         let tipo = $('#despesa-tipo_desp').val();
-        if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) !== -1 || tipo === null){
+        if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) !== -1 || tipo === null || tipo == 1){
             $('.beneficiario-fields').hide();
         }else{
             $('.beneficiario-fields').show();
@@ -60,7 +72,9 @@ $this->registerJs($script, View::POS_READY);
 
     <div class="row">
         <div class="col-md-2">
-            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => null]) ?>
+            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => 1,             
+            ])->label('Tipo de Despesa')?>
+            <span class="item-alert" id="tipo_desp-alert">Este campo não pode ser nulo.</span>
         </div>
         <div class="col-md-1">
             <?= $form->field($itemModel, 'numero_item')->textInput([
@@ -188,7 +202,7 @@ $this->registerJs($script, View::POS_READY);
 
     <div class="form-group">
         <?= Html::a('Voltar a lista', ['despesa/index'] ,['class' => 'btn btn-primary']) ?>
-        <?= Html::submitButton('Salvar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Salvar', ['class' => 'btn btn-success', 'id' => 'save-btn']) ?>
     </div>
     <?= $form->field($despesaModel, 'id_item')->hiddenInput()->label(false) ?>
     <?php ActiveForm::end(); ?>
