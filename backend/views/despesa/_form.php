@@ -10,6 +10,7 @@ use yii\widgets\MaskedInput;
 /* @var $this yii\web\View */
 /* @var $despesaModel backend\models\Despesa */
 /* @var $form yii\widgets\ActiveForm */
+
 $script = <<< JS
     const TIPOS = {
         MATERIAL_SERVICO: [1, 2, 7],
@@ -21,7 +22,11 @@ $script = <<< JS
     
     $(document).ready(function(){
         $('input').attr('autocomplete','off');
-        toggleFields();
+       // toggleFields();
+       $('#despesa-tipo_desp').val("0");
+       $('.beneficiario-fields').hide();
+       $('.despesapassagem-fields').hide();
+       $('.despesadiaria-fields').hide();
         $("#tipo_desp-alert").hide()
         $('#despesa-valor_unitario').on("keyup", function(){
             $('#despesa-valor_unitario').val($('#despesa-valor_unitario').val().replace(',', '.'));
@@ -32,38 +37,72 @@ $script = <<< JS
             let valorTotal = $('#despesa-valor_unitario').val() * $('#despesa-qtde').val();
             $('#valor_total').val('R$' + valorTotal);
         });
+        
+        //parte javascrip para esconder ou mostrar os campos dependendo do tipo escolhido
         $('#despesa-tipo_desp').on("change", function(){
             let tipo = $('#despesa-tipo_desp').val();
-            toggleFields();
-            if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) === -1){ 
+            
+           
+            if (tipo == 1 || tipo == 2){
+                
+                 $('.beneficiario-fields').hide();
+                 $('.despesapassagem-fields').hide();
+                 $('.despesadiaria-fields').hide();
+                
+            } else if (tipo == 3 || tipo ==4){
+                
+                $('.beneficiario-fields').show();
+                 $('.despesapassagem-fields').show();
+                 $('.despesadiaria-fields').hide();
+                
+            } else if (tipo == 5 || tipo ==6){
+                
+                 $('.beneficiario-fields').show();
+                 $('.despesapassagem-fields').hide();
+                 $('.despesadiaria-fields').show();
+            }  else {
+                 $('.beneficiario-fields').hide();
+                 $('.despesapassagem-fields').hide();
+                 $('.despesadiaria-fields').hide();
+            }
+            
+           // toggleFields();
+           /* if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) === -1){ 
                 alert('Ainda não é possível cadastrar este tipo de item!');
                 $('#despesa-tipo_desp').val(null);
                 toggleFields();
-            }
+            }*/
         });
     });
     
-    function toggleFields() {
+    /*function toggleFields() {
         let tipo = $('#despesa-tipo_desp').val();
         if(TIPOS.MATERIAL_SERVICO.indexOf(parseInt(tipo)) !== -1 || tipo === null){
             $('.beneficiario-fields').hide();
         }else{
             $('.beneficiario-fields').show();
         }
-    }
+    }*/
 JS;
 $this->registerJs($script, View::POS_READY);
 ?>
+
+
 <div class="despesa-form">
 
     <?php $form = ActiveForm::begin(); ?>
     <?= $form->errorSummary($despesaModel); ?>
 
+    <!--inicio formulario despesa -->
     <div class="row">
-        <div class="col-md-2">
-            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), ['value' => null])?>
+
+        <!-- tipo de despesa -->
+        <div class="col-md-4">
+            <?= $form->field($despesaModel, 'tipo_desp')->dropdownList($despesaModel->getTiposDespesa(), (['value' => null]))?>
         </div>
-        <div class="col-md-1">
+
+        <!-- item com auto complete do campo descrição se existir-->
+        <div class="col-md-4">
             <?= $form->field($itemModel, 'numero_item')->textInput([
                 'onkeyup' => '
                     if(!$(this).val()){
@@ -85,12 +124,16 @@ $this->registerJs($script, View::POS_READY);
             ])->label('Item') ?>
             <span class="item-alert" id="item_alert">Este item não existe.</span>
         </div>
-        <div class="col-md-3">
+
+        <!-- descrição do item -->
+        <div class="col-md-4">
             <?= $form->field($itemModel, 'descricao')->textInput([
                 'readonly' => true
             ])->label('Descricão item') ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- Nome fornecedor -->
+        <div class="col-md-4">
             <label for="nome_fornecedor">Fornecedor</label>
             <?= AutoComplete::widget([
                 'model' => $fornecedorModel,
@@ -113,39 +156,54 @@ $this->registerJs($script, View::POS_READY);
             ]); ?>
 
         </div>
-        <div class="col-md-2">
+
+        <!-- cpf fornecedor -->
+        <div class="col-md-4">
             <?= $form->field($fornecedorModel, 'cpf_cnpj')->widget(MaskedInput::className(), [
             'mask' => ['999.999.999-99', '99.999.999/9999-99'],
         ]) ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- cpf numero cheque -->
+        <div class="col-md-4">
             <?= $form->field($despesaModel, 'numero_cheque')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
+    <!-- data pagamento -->
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-4">
         <?= $form->field($despesaModel, 'data_pgto')->widget(MaskedInput::className(), [
             'clientOptions' => ['alias' =>  'date']
         ]) ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- Nota fiscal ou recebo -->
+        <div class="col-md-4">
             <?= $form->field($despesaModel, 'nf_recibo')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- data emissão -->
+        <div class="col-md-4">
             <?= $form->field($despesaModel, 'data_emissao_NF')->widget(MaskedInput::className(), [
             'clientOptions' => ['alias' =>  'date']
         ]) ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- valor unitario -->
+        <div class="col-md-4">
             <?= $form->field($despesaModel, 'valor_unitario')->textInput() ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- quantidade -->
+        <div class="col-md-4">
             <?= $form->field($despesaModel, 'qtde')->textInput() ?>
         </div>
-        <div class="col-md-2">
+
+        <!-- valor total -->
+        <div class="col-md-4">
             <label for="valor_total">Valor total</label>
-            <?= Html::textInput('valor_total', 'R$' + $despesaModel->valor_unitario * $despesaModel->qtde, [
+            <?= Html::textInput('valor_total', 'R$' .$despesaModel->valor_unitario * $despesaModel->qtde, [
                 'class' => 'form-control', 
                 'id' => 'valor_total',
                 'readonly' => true,
@@ -166,32 +224,75 @@ $this->registerJs($script, View::POS_READY);
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-3 beneficiario-fields">
+    <div class="row beneficiario-fields" >
+        <div class="col-md-4 ">
             <?= $form->field($beneficiarioModel, 'nome')->textInput() ?>
         </div>
-        <div class="col-md-3 beneficiario-fields">
+        <div class="col-md-4 ">
             <?= $form->field($beneficiarioModel, 'rg')->textInput()?>
         </div>
-        <div class="col-md-3 beneficiario-fields">
+        <div class="col-md-4">
             <?= $form->field($beneficiarioModel, 'orgao_emissor')->textInput() ?>
         </div>
-        <div class="col-md-3 beneficiario-fields">
+        <div class="col-md-4">
             <?= $form->field($beneficiarioModel, 'nivel_academico')->textInput() ?>
         </div>
     </div>
 
-    
-    <!-- destino -->
-    <!-- data/hora ida -->
-    <!-- data/hora volta -->
-    <!-- localizador -->
+
+    <!-- despesa passagem -->
+
+    <div class="row despesapassagem-fields">
+        <div class="col-md-4 ">
+            <?= $form->field($despesapassagemModel, 'data_hora_ida')->widget(MaskedInput::className(), [
+                'clientOptions' => ['alias' =>  'datetime']
+            ]) ?>
+        </div>
+
+        <div class="col-md-4">
+            <?= $form->field($despesapassagemModel, 'data_hora_volta')->widget(MaskedInput::className(), [
+                'clientOptions' => ['alias' =>  'datetime']
+            ]) ?>
+        </div>
+
+        <div class="col-md-4 ">
+            <?= $form->field($despesapassagemModel, 'destino')->textInput() ?>
+        </div>
+
+        <div class="col-md-4 ">
+            <?= $form->field($despesapassagemModel, 'localizador')->textInput() ?>
+        </div>
+    </div>
+
+    <!-- despesa diaria -->
+    <div class="row despesadiaria-fields">
+        <div class="col-md-4 ">
+            <?= $form->field($despesadiariaModel, 'data_hora_ida')->widget(MaskedInput::className(), [
+                'clientOptions' => ['alias' =>  'datetime']
+            ]) ?>
+        </div>
+
+        <div class="col-md-4 ">
+            <?= $form->field($despesadiariaModel, 'data_hora_volta')->widget(MaskedInput::className(), [
+                'clientOptions' => ['alias' =>  'datetime']
+            ]) ?>
+        </div>
+
+        <div class="col-md-4 ">
+            <?= $form->field($despesadiariaModel, 'destino')->textInput() ?>
+        </div>
+
+        <div class="col-md-4 ">
+            <?= $form->field($despesadiariaModel, 'localizador')->textInput() ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::a('Voltar a lista', ['despesa/index'] ,['class' => 'btn btn-primary']) ?>
         <?= Html::submitButton('Salvar', ['class' => 'btn btn-success']) ?>
     </div>
     <?= $form->field($despesaModel, 'id_item')->hiddenInput()->label(false) ?>
+
     <?php ActiveForm::end(); ?>
 
 </div>

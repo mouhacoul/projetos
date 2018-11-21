@@ -25,8 +25,8 @@ use Yii;
  * @property Beneficiario $beneficiario
  * @property Fornecedor $fornecedor
  * @property Item $item
- * @property DespesaDiaria $despesaDiaria
- * @property DespesaPassagem $despesaPassagem
+ * @property DespesaDiaria $despesadiaria
+ * @property DespesaPassagem $despesapsassagem
  */
 class Despesa extends \yii\db\ActiveRecord
 {
@@ -105,21 +105,23 @@ class Despesa extends \yii\db\ActiveRecord
         return $this->hasOne(Item::className(), ['id' => 'id_item']);
     }
 
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getDespesaDiaria()
-    // {
-    //     return $this->hasOne(DespesaDiaria::className(), ['id_despesa' => 'id']);
-    // }
+     /**
+      * @return \yii\db\ActiveQuery
+      */
+    /* public function getDespesaDiaria()
+     {
+         return $this->hasMany(DespesaDiaria::className(), ['id_depesa' => 'id']);
+     }*/
 
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getDespesaPassagem()
-    // {
-    //     return $this->hasOne(DespesaPassagem::className(), ['id_despesa' => 'id']);
-    // }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+    /* public function getDespesaPassagem()
+     {
+        return $this->hasMany(DespesaPassagem::className(), ['id_despesa' => 'id']);
+     }*/
 
     /**
      * @return Array
@@ -127,6 +129,7 @@ class Despesa extends \yii\db\ActiveRecord
     public function getTiposDespesa()
     {
         $tipos = [
+            0 => '- Selecionar um tipo de despesa.. -',
             1 => 'Material permanente',
             2 => 'Material de consumo',
             3 => 'Passagem nacional',
@@ -157,4 +160,6 @@ class Despesa extends \yii\db\ActiveRecord
 
         return $status;
     }
+
+
 }
